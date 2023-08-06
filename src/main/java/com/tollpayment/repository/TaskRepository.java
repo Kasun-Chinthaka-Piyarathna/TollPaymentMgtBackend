@@ -1,6 +1,6 @@
 package com.tollpayment.repository;
 
-import com.tollpayment.model.Task;
+import com.tollpayment.models.Task;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

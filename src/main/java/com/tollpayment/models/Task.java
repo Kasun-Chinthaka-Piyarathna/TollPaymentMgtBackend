@@ -1,4 +1,4 @@
-package com.tollpayment.model;
+package com.tollpayment.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

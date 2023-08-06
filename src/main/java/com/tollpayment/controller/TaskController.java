@@ -1,6 +1,6 @@
 package com.tollpayment.controller;
 
-import com.tollpayment.model.Task;
+import com.tollpayment.models.Task;
 import com.tollpayment.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

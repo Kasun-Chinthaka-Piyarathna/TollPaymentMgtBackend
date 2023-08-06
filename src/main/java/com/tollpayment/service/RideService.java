@@ -1,7 +1,6 @@
 package com.tollpayment.service;
 
-import com.tollpayment.model.Ride;
-import com.tollpayment.model.Task;
+import com.tollpayment.models.Ride;
 import com.tollpayment.repository.RideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.tollpayment.model;
+package com.tollpayment.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,19 +6,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "rides")
+@Document(collection = "payments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ride {
+public class Payment {
     @Id
-    private String rideId;
+    private String paymentId;
     private String userId;
-    private String entryTime;
-    private String exitTime;
-    private double distance;
-    private double speed;
-    private double rideFee;
-    private double fine;
-
+    private String journeyId;
+    private String transactionTime;
+    private String transactionStatus;
 }

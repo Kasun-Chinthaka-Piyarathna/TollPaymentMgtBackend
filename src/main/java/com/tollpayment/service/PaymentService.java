@@ -1,6 +1,6 @@
 package com.tollpayment.service;
 
-import com.tollpayment.model.Task;
+import com.tollpayment.models.Task;
 import com.tollpayment.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
