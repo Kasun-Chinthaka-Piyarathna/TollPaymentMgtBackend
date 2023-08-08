@@ -1,23 +1,16 @@
-package com.tollpayment.models;
-import java.util.HashSet;
-import java.util.Set;
+package com.tollpayment.payload.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "rides")
-public class Ride {
-    @Id
-    private String id;
+import java.util.Set;
 
-    @DBRef
+public class RideRequest {
     @NotBlank
-    private User user;
+    private String user_id;
 
     @NotBlank
     private String entry_time;
@@ -46,28 +39,13 @@ public class Ride {
     @NotBlank
     private String transaction_status;
 
-    public Ride() {
+
+    public String getUser_id() {
+        return user_id;
     }
 
-    public Ride(String entryTime, String exitTime, String distance,
-                String speed, String rideFee, String fine, String totalFee, String transactionTime,
-                String transactionStatus) {
-        this.entry_time= entryTime;
-        this.exit_time=exitTime;
-        this.distance= distance;
-        this.speed=speed;
-        this.ride_fee=rideFee;
-        this.fine = fine;
-        this.total_fee = totalFee;
-        this.transaction_time=transactionTime;
-        this.transaction_status=transactionStatus;
-    }
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     public String getEntry_time() {
@@ -140,13 +118,5 @@ public class Ride {
 
     public void setTransaction_status(String transaction_status) {
         this.transaction_status = transaction_status;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

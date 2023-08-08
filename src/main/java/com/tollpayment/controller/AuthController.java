@@ -1,5 +1,6 @@
 package com.tollpayment.controller;
 
+import com.tollpayment.constants.ApiConstants;
 import com.tollpayment.models.ERole;
 import com.tollpayment.models.Role;
 import com.tollpayment.models.User;
@@ -13,6 +14,7 @@ import com.tollpayment.security.jwt.JwtUtils;
 import com.tollpayment.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -72,13 +74,13 @@ public class AuthController {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Username is already taken!"));
+					.body(new MessageResponse(ApiConstants.STATUS_FAILED, "Username is already taken!",null));
 		}
 
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Email is already in use!"));
+					.body(new MessageResponse(ApiConstants.STATUS_FAILED,"Email is already in use!", null));
 		}
 
 		// Create new user's account
@@ -118,6 +120,6 @@ public class AuthController {
 		user.setRoles(roles);
 		userRepository.save(user);
 
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+		return ResponseEntity.ok(new MessageResponse(ApiConstants.STATUS_SUCCESS,"User registered successfully!", null));
 	}
 }
