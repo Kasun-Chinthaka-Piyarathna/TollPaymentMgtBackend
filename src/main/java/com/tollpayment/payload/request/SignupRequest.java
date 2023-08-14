@@ -1,4 +1,5 @@
 package com.tollpayment.payload.request;
+
 import java.util.Set;
 
 import jakarta.validation.constraints.*;
@@ -36,8 +37,10 @@ public class SignupRequest {
     private Set<String> roles;
 
     @NotBlank
-    @Size(min = 6, max = 40)
+    @Size(max = 40)
     private String password;
+
+    private Double wallet;
 
     public String getUsername() {
         return username;
@@ -109,5 +112,13 @@ public class SignupRequest {
 
     public void setPostaladdress(String postaladdress) {
         this.postaladdress = postaladdress;
+    }
+
+    public Double getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Double wallet) {
+        this.wallet = wallet;
     }
 }

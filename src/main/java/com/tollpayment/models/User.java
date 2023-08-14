@@ -13,138 +13,149 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
 public class User {
-  @Id
-  private String id;
+    @Id
+    private String id;
 
-  @NotBlank
-  @Size(max = 20)
-  private String username;
+    @NotBlank
+    @Size(max = 20)
+    private String username;
 
-  @NotBlank
-  @Size(max = 20)
-  private String firstname;
+    @NotBlank
+    @Size(max = 20)
+    private String firstname;
 
-  @NotBlank
-  @Size(max = 20)
-  private String lastname;
+    @NotBlank
+    @Size(max = 20)
+    private String lastname;
 
-  @NotBlank
-  @Size(max = 20)
-  private String phonenumber;
+    @NotBlank
+    @Size(max = 20)
+    private String phonenumber;
 
-  @NotBlank
-  @Size(max = 40)
-  private String vehiclenumber;
+    @NotBlank
+    @Size(max = 40)
+    private String vehiclenumber;
 
-  @NotBlank
-  @Size(max = 256)
-  private String postaladdress;
+    @NotBlank
+    @Size(max = 256)
+    private String postaladdress;
 
 
-  @NotBlank
-  @Size(max = 50)
-  @Email
-  private String email;
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    private String email;
 
-  @NotBlank
-  @Size(max = 120)
-  private String password;
+    @NotBlank
+    @Size(max = 120)
+    private String password;
 
-  @DBRef
-  private Set<Role> roles = new HashSet<>();
+    @DBRef
+    private Set<Role> roles = new HashSet<>();
 
-  public User() {
-  }
+    private Double wallet;
 
-  public User(String username,String firstname, String lastname, String phonenumber,
-              String vehiclenumber, String postaladdress, String email, String password) {
-    this.username = username;
-    this.firstname= firstname;
-    this.lastname=lastname;
-    this.phonenumber= phonenumber;
-    this.vehiclenumber=vehiclenumber;
-    this.postaladdress=postaladdress;
-    this.email = email;
-    this.password = password;
-  }
+    public User() {
+    }
 
-  public String getId() {
-    return id;
-  }
+    public User(String username, String firstname, String lastname, String phonenumber,
+                String vehiclenumber, String postaladdress, String email, String password, Double wallet) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.phonenumber = phonenumber;
+        this.vehiclenumber = vehiclenumber;
+        this.postaladdress = postaladdress;
+        this.email = email;
+        this.password = password;
+        this.wallet = wallet;
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public String getUsername() {
-    return username;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public String getPassword() {
-    return password;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public String getPassword() {
+        return password;
+    }
 
-  public Set<Role> getRoles() {
-    return roles;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
-  }
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-  public String getFirstname() {
-    return firstname;
-  }
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
-  public void setFirstname(String firstname) {
-    this.firstname = firstname;
-  }
+    public String getFirstname() {
+        return firstname;
+    }
 
-  public String getLastname() {
-    return lastname;
-  }
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-  public void setLastname(String lastname) {
-    this.lastname = lastname;
-  }
+    public String getLastname() {
+        return lastname;
+    }
 
-  public String getPhonenumber() {
-    return phonenumber;
-  }
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-  public void setPhonenumber(String phonenumber) {
-    this.phonenumber = phonenumber;
-  }
+    public String getPhonenumber() {
+        return phonenumber;
+    }
 
-  public String getVehiclenumber() {
-    return vehiclenumber;
-  }
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
 
-  public void setVehiclenumber(String vehiclenumber) {
-    this.vehiclenumber = vehiclenumber;
-  }
+    public String getVehiclenumber() {
+        return vehiclenumber;
+    }
 
-  public String getPostaladdress() {
-    return postaladdress;
-  }
+    public void setVehiclenumber(String vehiclenumber) {
+        this.vehiclenumber = vehiclenumber;
+    }
 
-  public void setPostaladdress(String postaladdress) {
-    this.postaladdress = postaladdress;
-  }
+    public String getPostaladdress() {
+        return postaladdress;
+    }
+
+    public void setPostaladdress(String postaladdress) {
+        this.postaladdress = postaladdress;
+    }
+
+    public Double getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Double wallet) {
+        this.wallet = wallet;
+    }
 }

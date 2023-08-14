@@ -2,13 +2,10 @@
 package com.tollpayment.controller;
 
 import com.tollpayment.constants.ApiConstants;
-import com.tollpayment.models.ERole;
 import com.tollpayment.models.Ride;
-import com.tollpayment.models.Role;
 import com.tollpayment.models.User;
 import com.tollpayment.payload.request.PaymentRequest;
 import com.tollpayment.payload.request.RideRequest;
-import com.tollpayment.payload.request.SignupRequest;
 import com.tollpayment.payload.response.MessageResponse;
 import com.tollpayment.repository.RideRepository;
 import com.tollpayment.repository.UserRepository;
@@ -19,65 +16,94 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/rides")
 public class TestController {
-	@Autowired
-	RideRepository rideRepository;
-	@Autowired
-	UserRepository userRepository;
+    @Autowired
+    RideRepository rideRepository;
+    @Autowired
+    UserRepository userRepository;
 
-	@GetMapping("/user")
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public String userAccess() {
-		return "User Content.";
-	}
+    /*
+    User ONLY APIS
+     */
+    @PostMapping("/create")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> createRide(@Valid @RequestBody RideRequest rideRequest) {
+        System.out.println(rideRequest);
+        // Create new ride
+        Ride ride = new Ride(rideRequest.getEntry_time(), rideRequest.getExit_time(),
+                rideRequest.getDistance(), rideRequest.getSpeed(), rideRequest.getRide_fee(), rideRequest.getFine(),
+                rideRequest.getTotal_fee(), rideRequest.getStart_balance(), rideRequest.getRemaining_balance(),
+                rideRequest.getTransaction_time(), rideRequest.getTransaction_status());
 
-	@GetMapping("/admin")
-	@PreAuthorize("hasRole('ADMIN')")
-	public String adminAccess() {
-		return "Admin Board.";
-	}
+        User user = userRepository.findById(rideRequest.getUser_id())
+                .orElseThrow(() -> new UsernameNotFoundException("Ride Not Found with ID: " + rideRequest.getUser_id()));
 
-	@PostMapping("/create")
-	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> createRide(@Valid @RequestBody RideRequest rideRequest) {
-		System.out.println(rideRequest);
-		// Create new ride
-		Ride ride = new Ride(rideRequest.getEntry_time(),rideRequest.getExit_time(),
-				rideRequest.getDistance(), rideRequest.getSpeed(), rideRequest.getRide_fee(),rideRequest.getFine(),
-				rideRequest.getTotal_fee(),rideRequest.getTransaction_time(), rideRequest.getTransaction_status());
+        ride.setUser(user);
+        rideRepository.save(ride);
+        return ResponseEntity.ok(new MessageResponse(ApiConstants.STATUS_SUCCESS, "Ride added successfully!", null));
+    }
 
-		User user = userRepository.findById(rideRequest.getUser_id())
-				.orElseThrow(() -> new UsernameNotFoundException("Ride Not Found with ID: " + rideRequest.getUser_id()));
+    @GetMapping("/ridesperuser")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getAllRidesForUser(@RequestParam("userId") String userId) {
+        List<Ride> userRides = new ArrayList<>();
+        List<Ride> rideList = rideRepository.findAll();
+        System.out.println(rideList);
+        for (int i = 0; i < rideList.size(); i++) {
+            System.out.println(i);
+            Ride ride = rideList.get(i);
+            if (ride.getUser().getId().equals(userId)) {
+                userRides.add(ride);
+            }
+        }
+        return ResponseEntity.ok(new MessageResponse(ApiConstants.STATUS_SUCCESS, "Rides fetched successfully!", userRides));
+    }
 
-		ride.setUser(user);
-		rideRepository.save(ride);
-		return ResponseEntity.ok(new MessageResponse(ApiConstants.STATUS_SUCCESS,"Ride added successfully!",null));
-	}
+    @PutMapping()
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> updateRide(@Valid @RequestBody PaymentRequest paymentRequest) {
+        System.out.println("AWA");
+        Ride ride = rideRepository.findById(paymentRequest.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("Ride Not Found with ID: " + paymentRequest.getId()));
+        ride.setTransaction_time(paymentRequest.getTransaction_time());
 
-	@GetMapping("all")
-	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> getAllRides() {
-		List<Ride> rideList = rideRepository.findAll();
-		return ResponseEntity.ok(new MessageResponse(ApiConstants.STATUS_SUCCESS,"Ride added successfully!",rideList));
-	}
+        //Update wallet balance of the user
+        try {
+            User user = ride.getUser();
+            User userModel = userRepository.findById(user.getId())
+                    .orElseThrow(() -> new UsernameNotFoundException("User Not Found with ID: " + user.getId()));
+            Double currentWallet = userModel.getWallet();
+            Double remainingWallet = currentWallet - paymentRequest.getPayment();
+            userModel.setWallet(remainingWallet);
+            userRepository.save(userModel);
+            ride.setStart_balance(currentWallet);
+            ride.setRemaining_balance(remainingWallet);
+            ride.setTransaction_status("Success");
 
-	@PutMapping()
-	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> updateRide (@Valid @RequestBody PaymentRequest paymentRequest) {
-		Ride ride  = rideRepository.findById(paymentRequest.getId())
-				.orElseThrow(() -> new UsernameNotFoundException("Ride Not Found with ID: " + paymentRequest.getId()));
-		ride.setTransaction_time(paymentRequest.getTransaction_time());
-		ride.setTransaction_status(paymentRequest.getTransaction_status());
-		rideRepository.save(ride);
-		return ResponseEntity.ok(new MessageResponse(ApiConstants.STATUS_SUCCESS,"Ride updated successfully!",ride));
-	}
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse(ApiConstants.STATUS_FAILED, "Something went wrong!", null));
+        }
+
+        //Update ride
+        rideRepository.save(ride);
+        return ResponseEntity.ok(new MessageResponse(ApiConstants.STATUS_SUCCESS, "Ride updated successfully!", ride));
+    }
+
+    /*
+    Admin Only APIs
+     */
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllRides() {
+        List<Ride> rideList = rideRepository.findAll();
+        return ResponseEntity.ok(new MessageResponse(ApiConstants.STATUS_SUCCESS, "Rides fetched successfully!", rideList));
+    }
 
 }

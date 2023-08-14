@@ -1,11 +1,8 @@
 package com.tollpayment.models;
-import java.util.HashSet;
-import java.util.Set;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
+import lombok.Builder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -26,42 +23,49 @@ public class Ride {
     private String exit_time;
 
     @NotBlank
-    private String distance;
+    private Double distance;
 
     @NotBlank
-    private String speed;
+    private Double speed;
 
     @NotBlank
-    private String ride_fee;
+    private Double ride_fee;
 
     @NotBlank
-    private String fine;
+    private Double fine;
 
     @NotBlank
-    private String total_fee;
+    private Double total_fee;
 
-    @NotBlank
-    private String transaction_time;
 
-    @NotBlank
-    private String transaction_status;
+    private Double start_balance;
+
+    private Double remaining_balance;
+    @Builder.Default
+    private String transaction_time = null;
+    @Builder.Default
+    private String transaction_status = null;
 
     public Ride() {
     }
 
-    public Ride(String entryTime, String exitTime, String distance,
-                String speed, String rideFee, String fine, String totalFee, String transactionTime,
+    public Ride(String entryTime, String exitTime, Double distance,
+                Double speed, Double rideFee, Double fine, Double totalFee, Double startBalance, Double remainBalance,
+                String transactionTime,
                 String transactionStatus) {
-        this.entry_time= entryTime;
-        this.exit_time=exitTime;
-        this.distance= distance;
-        this.speed=speed;
-        this.ride_fee=rideFee;
+        this.entry_time = entryTime;
+        this.exit_time = exitTime;
+        this.distance = distance;
+        this.speed = speed;
+        this.ride_fee = rideFee;
         this.fine = fine;
         this.total_fee = totalFee;
-        this.transaction_time=transactionTime;
-        this.transaction_status=transactionStatus;
+        this.start_balance = startBalance;
+        this.remaining_balance = remainBalance;
+        this.transaction_time = transactionTime;
+        this.transaction_status = transactionStatus;
     }
+
     public String getId() {
         return id;
     }
@@ -86,43 +90,43 @@ public class Ride {
         this.exit_time = exit_time;
     }
 
-    public String getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
-    public String getSpeed() {
+    public Double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(String speed) {
+    public void setSpeed(Double speed) {
         this.speed = speed;
     }
 
-    public String getRide_fee() {
+    public Double getRide_fee() {
         return ride_fee;
     }
 
-    public void setRide_fee(String ride_fee) {
+    public void setRide_fee(Double ride_fee) {
         this.ride_fee = ride_fee;
     }
 
-    public String getFine() {
+    public Double getFine() {
         return fine;
     }
 
-    public void setFine(String fine) {
+    public void setFine(Double fine) {
         this.fine = fine;
     }
 
-    public String getTotal_fee() {
+    public Double getTotal_fee() {
         return total_fee;
     }
 
-    public void setTotal_fee(String total_fee) {
+    public void setTotal_fee(Double total_fee) {
         this.total_fee = total_fee;
     }
 
@@ -148,5 +152,21 @@ public class Ride {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Double getStart_balance() {
+        return start_balance;
+    }
+
+    public void setStart_balance(Double start_balance) {
+        this.start_balance = start_balance;
+    }
+
+    public Double getRemaining_balance() {
+        return remaining_balance;
+    }
+
+    public void setRemaining_balance(Double remaining_balance) {
+        this.remaining_balance = remaining_balance;
     }
 }

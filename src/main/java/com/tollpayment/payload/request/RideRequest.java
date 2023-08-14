@@ -1,44 +1,37 @@
 package com.tollpayment.payload.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
-import java.util.Set;
-
 public class RideRequest {
-    @NotBlank
+
     private String user_id;
 
-    @NotBlank
+
     private String entry_time;
 
-    @NotBlank
+
     private String exit_time;
 
-    @NotBlank
-    private String distance;
 
-    @NotBlank
-    private String speed;
+    private Double distance;
 
-    @NotBlank
-    private String ride_fee;
 
-    @NotBlank
-    private String fine;
+    private Double speed;
 
-    @NotBlank
-    private String total_fee;
 
-    @NotBlank
+    private Double ride_fee;
+
+
+    private Double fine;
+
+
+    private Double total_fee;
+
+    private Double start_balance;
+
+    private Double remaining_balance;
+
     private String transaction_time;
 
-    @NotBlank
     private String transaction_status;
-
 
     public String getUser_id() {
         return user_id;
@@ -64,43 +57,43 @@ public class RideRequest {
         this.exit_time = exit_time;
     }
 
-    public String getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
-    public String getSpeed() {
+    public Double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(String speed) {
+    public void setSpeed(Double speed) {
         this.speed = speed;
     }
 
-    public String getRide_fee() {
+    public Double getRide_fee() {
         return ride_fee;
     }
 
-    public void setRide_fee(String ride_fee) {
+    public void setRide_fee(Double ride_fee) {
         this.ride_fee = ride_fee;
     }
 
-    public String getFine() {
+    public Double getFine() {
         return fine;
     }
 
-    public void setFine(String fine) {
+    public void setFine(Double fine) {
         this.fine = fine;
     }
 
-    public String getTotal_fee() {
+    public Double getTotal_fee() {
         return total_fee;
     }
 
-    public void setTotal_fee(String total_fee) {
+    public void setTotal_fee(Double total_fee) {
         this.total_fee = total_fee;
     }
 
@@ -118,5 +111,21 @@ public class RideRequest {
 
     public void setTransaction_status(String transaction_status) {
         this.transaction_status = transaction_status;
+    }
+
+    public Double getStart_balance() {
+        return start_balance;
+    }
+
+    public void setStart_balance(Double start_balance) {
+        this.start_balance = start_balance;
+    }
+
+    public Double getRemaining_balance() {
+        return remaining_balance;
+    }
+
+    public void setRemaining_balance(Double remaining_balance) {
+        this.remaining_balance = remaining_balance;
     }
 }
